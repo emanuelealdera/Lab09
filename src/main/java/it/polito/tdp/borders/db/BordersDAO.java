@@ -6,16 +6,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import it.polito.tdp.borders.model.Border;
 import it.polito.tdp.borders.model.Country;
 
 public class BordersDAO {
 
-	public List<Country> loadAllCountries() {
+	public void loadAllCountries(Map <Integer, Country> idMap) {
 
 		String sql = "SELECT ccode, StateAbb, StateNme FROM country ORDER BY StateAbb";
-		List<Country> result = new ArrayList<Country>();
 		
 		try {
 			Connection conn = ConnectDB.getConnection();
@@ -23,11 +23,13 @@ public class BordersDAO {
 			ResultSet rs = st.executeQuery();
 
 			while (rs.next()) {
-				System.out.format("%d %s %s\n", rs.getInt("ccode"), rs.getString("StateAbb"), rs.getString("StateNme"));
+				if (!idMap.containsKey(rs.getInt("ccode"))) {
+					Country c = new Country(rs.getInt("ccode"), rs.getString("StateAbb"), rs.getString("StateNme"));
+					idMap.put(c.getId(), c);
+				}
 			}
 			
 			conn.close();
-			return result;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -38,7 +40,26 @@ public class BordersDAO {
 
 	public List<Border> getCountryPairs(int anno) {
 
-		System.out.println("TODO -- BordersDAO -- getCountryPairs(int anno)");
-		return new ArrayList<Border>();
+		String sql = "SELECT c.state1no as c1, c.state2no as c2 " + 
+				"FROM contiguity AS c " + 
+				"WHERE c.year<= ? AND c.conttype=1";
+		List <Border> borders = new ArrayList<> ();
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, anno);
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				borders.add(new Border(rs.getInt("c1"), rs.getInt("c2")));
+			}
+			
+			conn.close();
+			
+		} catch (SQLException e) {
+			System.out.println("Errore nel metodo getCountryPairs");
+			e.printStackTrace();
+		}
+		return borders;
 	}
 }

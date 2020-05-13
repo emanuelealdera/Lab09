@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -10,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.borders.FXMLController">
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.borders.FXMLController">
    <top>
       <Label text="Country Borders" BorderPane.alignment="CENTER">
          <font>
@@ -24,7 +25,7 @@
    <center>
       <VBox spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER_LEFT" spacing="5.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="479.0" spacing="5.0">
                <children>
                   <Label prefWidth="60.0" text="Anno:">
                      <HBox.margin>
@@ -40,6 +41,20 @@
                   <Insets top="15.0" />
                </VBox.margin>
             </HBox>
+            <HBox prefHeight="25.0" prefWidth="479.0">
+               <children>
+                  <ComboBox fx:id="comboBox" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets left="75.0" />
+                     </HBox.margin>
+                  </ComboBox>
+                  <Button fx:id="btnConfinanti" mnemonicParsing="false" onAction="#trovaConfinanti" prefHeight="25.0" prefWidth="101.0" text="Trova confinanti">
+                     <HBox.margin>
+                        <Insets left="23.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
             <TextArea fx:id="txtResult" editable="false" wrapText="true">
                <VBox.margin>
                   <Insets top="10.0" />
@@ -51,4 +66,3 @@
       </VBox>
    </center>
 </BorderPane>
-
